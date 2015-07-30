@@ -39,7 +39,7 @@ TARGET_BOOTLOADER_BOARD_NAME := MSM8226
 TARGET_NO_BOOTLOADER := true
 
 # Kernel
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 vmalloc=400M utags.blkdev=/dev/block/platform/msm_sdcc.1/by-name/utags
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.selinux=permissive androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 vmalloc=400M utags.blkdev=/dev/block/platform/msm_sdcc.1/by-name/utags
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
@@ -47,6 +47,7 @@ BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 TARGET_KERNEL_SOURCE := kernel/motorola/msm8226
 
 # Audio
+TARGET_QCOM_AUDIO_VARIANT := caf
 AUDIO_FEATURE_ENABLED_FM := true
 AUDIO_FEATURE_ENABLED_MULTI_VOICE_SESSIONS := true
 AUDIO_FEATURE_ENABLED_NEW_SAMPLE_RATE := true
@@ -64,9 +65,6 @@ USE_DEVICE_SPECIFIC_CAMERA := true
 
 # Charger
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/mmi_lpm/lpm_mode
-
-# CMHW
-BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw/
 
 # Display
 BOARD_EGL_CFG := $(LOCAL_PATH)/configs/egl.cfg
@@ -98,6 +96,8 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 
 # Qualcomm support
 BOARD_USES_QCOM_HARDWARE := true
+TARGET_QCOM_MEDIA_VARIANT := caf-bfam
+TARGET_QCOM_DISPLAY_VARIANT := caf-bfam
 
 # Recovery
 COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
@@ -123,7 +123,6 @@ BOARD_SEPOLICY_UNION += \
     file_contexts \
     file.te \
     init.te \
-    init_shell.te \
     kernel.te \
     keystore.te \
     mediaserver.te \
@@ -140,6 +139,20 @@ BOARD_SEPOLICY_UNION += \
     thermal-engine.te \
     ueventd.te \
     vold.te
+
+# TWRP
+TW_THEME := portrait_hdpi
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
+TW_TARGET_USES_QCOM_BSP := true
+TW_SCREEN_BLANK_ON_BOOT := true
+TW_IGNORE_MAJOR_AXIS_0 := true
+#TW_INCLUDE_CRYPTO := true
+TW_NO_USB_STORAGE := false
+TW_INTERNAL_STORAGE_PATH := "/data/media"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+BOARD_HAS_NO_REAL_SDCARD := true
+RECOVERY_SDCARD_ON_DATA := true
+TW_IGNORE_MAJOR_AXIS_0 := true
 
 # Vold
 BOARD_VOLD_DISC_HAS_MULTIPLE_MAJORS := true
