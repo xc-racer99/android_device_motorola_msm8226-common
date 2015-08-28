@@ -79,6 +79,11 @@ USE_DEVICE_SPECIFIC_CAMERA := true
 # Charger
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/mmi_lpm/lpm_mode
 
+# Dex-preoptimization to speed up first boot sequence
+ifeq ($(HOST_OS),linux)
+    WITH_DEXPREOPT := true
+endif
+
 # Display
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 TARGET_USES_C2D_COMPOSITION := true
