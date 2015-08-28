@@ -267,4 +267,13 @@
          proportionally to the smaller buckets. -1 keeps the default. -->
     <integer name="config_lowMemoryKillerMinFreeKbytesAbsolute">81920</integer>
 
+    <!-- Global action menu -->
+    <string-array translatable="false" name="config_globalActionsList">
+        <item>power</item>
+        <item>reboot</item>
+        <item>airplane</item>
+        <item>users</item>
+        <item>silent</item>
+    </string-array>
+
 </resources>
