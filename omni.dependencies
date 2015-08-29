@@ -24,11 +24,6 @@
     "revision": "android-5.1-caf"
   },
   {
-    "repository": "xc-racer99/android_device_qcom_common",
-    "target_path": "device/qcom/common",
-    "revision": "android-5.1"
-  },
-  {
     "repository": "xc-racer99/android_kernel_motorola_msm8226",
     "target_path": "kernel/motorola/msm8226",
     "revision": "android-5.1"
