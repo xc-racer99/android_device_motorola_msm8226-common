@@ -94,7 +94,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.radio.dfr_mode_set=1 \
     persist.radio.msgtunnel.start=false \
     persist.radio.no_wait_for_card=1 \
-    rild.libpath=/system/vendor/lib/libril-qc-qmi-1.so
+    rild.libpath=/system/vendor/lib/libril-qc-qmi-1.so \
+    persist.radio.multisim=none
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.use_data_netmgrd=true

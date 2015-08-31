@@ -91,10 +91,6 @@ PRODUCT_PACKAGES += \
     hwcomposer.msm8226 \
     memtrack.msm8226
 
-# Doze
-PRODUCT_PACKAGES += \
-    MotoDoze
-
 # Ebtables
 PRODUCT_PACKAGES += \
     ebtables \
@@ -104,13 +100,6 @@ PRODUCT_PACKAGES += \
 # Filesystem
 PRODUCT_PACKAGES += \
     setup_fs
-
-# FM
-PRODUCT_PACKAGES += \
-    FM2 \
-    FMRecord \
-    libqcomfm_jni \
-    qcom.fmradio
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -170,6 +159,10 @@ PRODUCT_PACKAGES += \
 # Thermal
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/thermal-engine-8226.conf:system/etc/thermal-engine-8226.conf
+
+# TWRP
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/etc/twrp.fstab:recovery/root/etc/twrp.fstab
 
 # USB
 PRODUCT_PACKAGES += \
