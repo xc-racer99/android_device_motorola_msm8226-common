@@ -118,3 +118,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.qc.sub.rdump.on=1 \
     persist.sys.ssr.restart_level=3
+
+# Default.prop overrides to get adb working at boot 
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.secure=0 \
+    ro.adb.secure=0 
