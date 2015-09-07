@@ -1,16 +1,16 @@
 # Audio
 PRODUCT_PROPERTY_OVERRIDES += \
-    audio.offload.24bit.enable=false \
+    ro.qc.sdk.audio.ssr=false \
+    ro.qc.sdk.audio.fluencetype=fluence \
+    persist.audio.fluence.voicecall=true \
+    af.resampler.quality=4 \
     audio.offload.buffer.size.kb=32 \
-    audio.offload.gapless.enabled=false \
-    audio.offload.multiple.enabled=false
-
-PRODUCT_PROPERTY_OVERRIDES += \
+    audio.offload.gapless.enabled=true \
+    use.voice.path.for.pcm.voip=true \
     av.offload.enable=false \
-    av.streaming.offload.enable=false
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    mm.enable.smoothstreaming=true
+    av.streaming.offload.enable=false \
+    audio.offload.pcm.16bit.enable=true \
+    audio.offload.multiple.enabled=false
 
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.audio.calfile0=/etc/Bluetooth_cal.acdb \
@@ -20,18 +20,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.audio.calfile4=/etc/Hdmi_cal.acdb \
     persist.audio.calfile5=/etc/Headset_cal.acdb \
     persist.audio.calfile6=/etc/Speaker_cal.acdb
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.audio.fluence.voicecall=true \
-    persist.audio.fluence.voicerec=false \
-    persist.audio.fluence.speaker=true
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.qc.sdk.audio.fluencetype=fluence \
-    ro.qc.sdk.audio.ssr=false
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    use.voice.path.for.pcm.voip=true
 
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
