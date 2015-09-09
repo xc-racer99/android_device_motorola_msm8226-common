@@ -47,6 +47,9 @@ BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 BOARD_CUSTOM_BOOTIMG_MK := device/motorola/msm8226-common/mkbootimg.mk
 TARGET_KERNEL_SOURCE := kernel/motorola/msm8226
 
+#ANT
+BOARD_ANT_WIRELESS_DEVICE := "qualcomm-smd"
+
 # Audio
 AUDIO_FEATURE_ENABLED_COMPRESS_CAPTURE := true
 AUDIO_FEATURE_ENABLED_COMPRESS_VOIP := true

@@ -59,6 +59,13 @@ TARGET_SCREEN_WIDTH := 720
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
 
+# ANT+
+PRODUCT_COPY_FILES += \
+     kernel/motorola/msm8226/drivers/staging/prima/firmware_bin/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat \
+     kernel/motorola/msm8226/drivers/staging/prima/firmware_bin/WCNSS_qcom_cfg.ini:system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini
+
+$(call inherit-product-if-exists, external/ant-wireless/build/ant-wireless.mk)
+
 # Audio
 PRODUCT_PACKAGES += \
     audiod \
