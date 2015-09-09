@@ -1,38 +1,17 @@
-From c8dd6e32cc44cb1ac3267c4a5ece1eae5a4cff4c Mon Sep 17 00:00:00 2001
-From: Steve Kondik <steve@cyngyn.com>
+From 5d02ea32516187256bb9dcf58ad34f2a92c2851b Mon Sep 17 00:00:00 2001
+From: xc-racer99 <xc-racer2@live.ca>
 Date: Fri, 2 Jan 2015 14:47:25 -0800
-Subject: [PATCH] Allow devices to not use hwdep calibration Some devices do
- not support this yet, so make it opt-outable
+Subject: [PATCH 1/2] audio-caf-bfam: Allow devices to not use hwdep
+ calibration Some devices do not support this, falcon for sure, so make it
+ opt-outable
+
+Inspired by the commit at https://github.com/CyanogenMod/android_hardware_qcom_audio/commit/4f4de4bfb8fcfaec538260a1bed5657d0db1d57a
 
 Change-Id: I7927ecc05fc7177e935f7b7af502a439c0e9524d
 ---
  hal/Android.mk         |  4 ++++
  hal/msm8974/platform.c | 10 +++++++++-
  2 files changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/hal/Android.mk b/hal/Android.mk
-index 0d8670a..48cc665 100644
---- a/hal/Android.mk
-+++ b/hal/Android.mk
-@@ -165,6 +165,10 @@ ifeq ($(strip $(AUDIO_FEATURE_PCM_IOCTL_ENABLED)),true)
-     LOCAL_CFLAGS += -DPCM_IOCTL_ENABLED
- endif
- 
-+ifeq ($(strip $(AUDIO_FEATURE_DISABLED_HWDEP_CAL)),true)
-+    LOCAL_CFLAGS += -DHWDEP_CAL_DISABLED
-+endif
-+
- LOCAL_COPY_HEADERS_TO   := mm-audio
- LOCAL_COPY_HEADERS      := audio_extn/audio_defs.h
- 
-diff --git a/hal/msm8974/platform.c b/hal/msm8974/platform.c
-index 93b1775..2df8f38 100644
---- a/hal/msm8974/platform.c
-+++ b/hal/msm8974/platform.c
-@@ -35,7 +35,9 @@
- #include "voice_extn.h"
- #include "sound/compress_params.h"
-:
 
 diff --git a/hal/Android.mk b/hal/Android.mk
 index 0d8670a..48cc665 100644
@@ -76,7 +55,7 @@ index 93b1775..2df8f38 100644
 +#endif
  
  enum {
-        VOICE_FEATURE_SET_DEFAULT,
+ 	VOICE_FEATURE_SET_DEFAULT,
 @@ -338,6 +342,8 @@ static int acdb_device_table[SND_DEVICE_MAX] = {
  
  #define DEEP_BUFFER_PLATFORM_DELAY (29*1000LL)
@@ -106,5 +85,59 @@ index 93b1775..2df8f38 100644
  }
  
 -- 
-2.5.0
+2.1.4
+
+
+From aa02778010b6a0499af3a6fc5675331bc3ade75f Mon Sep 17 00:00:00 2001
+From: Eric Laurent <elaurent@google.com>
+Date: Thu, 23 Oct 2014 14:42:59 -0700
+Subject: [PATCH 2/2] compress offload: use new sample rate representation.
+
+Pass directly the sample rate value to struct snd_codec
+instead of the ALSA enum.
+
+Bug: 17398311.
+Change-Id: I79483773807ce3b0b146fde28d6498444c69fe89
+
+Conflicts:
+	hal/Android.mk
+---
+ hal/Android.mk | 4 ++++
+ hal/audio_hw.c | 4 ++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/hal/Android.mk b/hal/Android.mk
+index 48cc665..a112577 100644
+--- a/hal/Android.mk
++++ b/hal/Android.mk
+@@ -110,6 +110,10 @@ ifeq ($(strip $(AUDIO_FEATURE_ENABLED_COMPRESS_CAPTURE)),true)
+     LOCAL_SRC_FILES += audio_extn/compress_capture.c
+ endif
+ 
++ifeq ($(strip $(AUDIO_FEATURE_ENABLED_NEW_SAMPLE_RATE)),true)
++    LOCAL_CFLAGS += -DNEW_SAMPLE_RATE_ENABLED
++endif
++
+ ifeq ($(strip $(DOLBY_DDP)),true)
+     LOCAL_CFLAGS += -DDS1_DOLBY_DDP_ENABLED
+     LOCAL_SRC_FILES += audio_extn/dolby.c
+diff --git a/hal/audio_hw.c b/hal/audio_hw.c
+index 9156a00..be89824 100644
+--- a/hal/audio_hw.c
++++ b/hal/audio_hw.c
+@@ -2426,8 +2426,12 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
+                        platform_get_compress_offload_buffer_size(&config->offload_info);
+         }
+         out->compr_config.fragments = COMPRESS_OFFLOAD_NUM_FRAGMENTS;
++#ifdef NEW_SAMPLE_RATE_ENABLED
++        out->compr_config.codec->sample_rate = config->offload_info.sample_rate;
++#else
+         out->compr_config.codec->sample_rate =
+                     compress_get_alsa_rate(config->offload_info.sample_rate);
++#endif
+         out->compr_config.codec->bit_rate =
+                     config->offload_info.bit_rate;
+         out->compr_config.codec->ch_in =
+-- 
+2.1.4
 
