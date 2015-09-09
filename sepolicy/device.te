@@ -2,6 +2,10 @@
 type cid_block_device, dev_type;
 type clogo_block_device, dev_type;
 type logs_block_device, dev_type;
+type fsc_block_device, dev_type;
+type fsg_block_device, dev_type;
 type hob_block_device, dev_type;
+type modem_block_device, dev_type;
+type ssd_block_device, dev_type;
 type userdata_block_device, dev_type;
 type utags_block_device, dev_type;

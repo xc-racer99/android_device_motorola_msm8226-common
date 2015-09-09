@@ -30,6 +30,19 @@
 /dev/block/bootdevice/by-name/userdata                      u:object_r:userdata_block_device:s0
 /dev/block/bootdevice/by-name/utags                         u:object_r:utags_block_device:s0
 /dev/block/bootdevice/by-name/utagsBackup                   u:object_r:utags_block_device:s0
+/dev/block/mmcblk0p8                                        u:object_r:utags_block_device:s0
+/dev/block/mmcblk0p9                                        u:object_r:logs_block_device:s0
+/dev/block/mmcblk0p15                                       u:object_r:utags_block_device:s0
+/dev/block/mmcblk0p17                                       u:object_r:modem_block_device:s0
+/dev/block/mmcblk0p18                                       u:object_r:modem_block_device:s0
+/dev/block/mmcblk0p19                                       u:object_r:hob_block_device:s0
+/dev/block/mmcblk0p20                                       u:object_r:hob_block_device:s0
+/dev/block/mmcblk0p21                                       u:object_r:fsg_block_device:s0
+/dev/block/mmcblk0p22                                       u:object_r:fsc_block_device:s0
+/dev/block/mmcblk0p23                                       u:object_r:ssd_block_device:s0
+/dev/block/mmcblk0p25                                       u:object_r:cid_block_device:s0
+/dev/block/mmcblk0p28                                       u:object_r:clogo_block_device:s0
+/dev/block/mmcblk0p36                                       u:object_r:userdata_block_device:s0
 
 # PDS
 /pds(/.*)?                                                  u:object_r:pds_file:s0
