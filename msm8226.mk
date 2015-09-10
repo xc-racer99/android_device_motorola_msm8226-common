@@ -130,6 +130,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     libmoto_log
 
+# MotoGParts
+PRODUCT_PACKAGES += \
+    MotoGParts
+
 # OMX
 PRODUCT_PACKAGES += \
     libdashplayer \
