@@ -1,3 +1,7 @@
 allow system_app shell_data_file:dir search;
 allow system_app system_app_data_file:file { execute execute_no_trans };
 allow system_app sysfs_ksm:dir search;
+
+# MotoGParts
+allow system_app display_sysfs:file { getattr open read write };
+allow system_app vibeamp_sysfs:file { getattr open read write };
