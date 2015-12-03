@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015 The CyanogenMod Project
+ * Copyright (C) 2015 The OmniRom Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,18 +39,8 @@
 #define TARGET_LOADS "80 998400:90 1190400:99"
 #define TARGET_LOADS_LPM "95 1190400:99"
 
-enum {
-    PROFILE_POWER_SAVE = 0,
-    PROFILE_BALANCED,
-    PROFILE_HIGH_PERFORMANCE,
-    PROFILE_MAX
-};
-
 static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 static int boostpulse_fd = -1;
-static int current_power_profile = -1;
-static int requested_power_profile = -1;
-static int is_low_power_mode = 0;
 
 static int sysfs_write(char *path, char *s)
 {
@@ -95,9 +86,6 @@ static int boostpulse_open()
 
 static void power_set_interactive(__attribute__((unused)) struct power_module *module, int on)
 {
-    if (current_power_profile != PROFILE_BALANCED)
-        return;
-
     if (on) {
         sysfs_write(INTERACTIVE_PATH "hispeed_freq", HISPEED_FREQ);
         sysfs_write(INTERACTIVE_PATH "go_hispeed_load", GO_HISPEED_LOAD);
@@ -106,80 +94,6 @@ static void power_set_interactive(__attribute__((unused)) struct power_module *m
         sysfs_write(INTERACTIVE_PATH "hispeed_freq", HISPEED_FREQ_LPM);
         sysfs_write(INTERACTIVE_PATH "go_hispeed_load", GO_HISPEED_LOAD_LPM);
         sysfs_write(INTERACTIVE_PATH "target_loads", TARGET_LOADS_LPM);
-    }
-}
-
-static void set_power_profile(int profile)
-{
-    if (is_low_power_mode) {
-        /* Let's assume we get a valid profile */
-        requested_power_profile = profile;
-        ALOGD("%s: low power mode enabled, ignoring profile change request", __func__);
-        return;
-    }
-
-    if (profile == current_power_profile)
-        return;
-
-    switch (profile) {
-    case PROFILE_BALANCED:
-        sysfs_write(INTERACTIVE_PATH "boost", "0");
-        sysfs_write(INTERACTIVE_PATH "boostpulse_duration", "60000");
-        sysfs_write(INTERACTIVE_PATH "go_hispeed_load", GO_HISPEED_LOAD);
-        sysfs_write(INTERACTIVE_PATH "hispeed_freq", HISPEED_FREQ);
-        sysfs_write(INTERACTIVE_PATH "io_is_busy", "1");
-        sysfs_write(INTERACTIVE_PATH "min_sample_time", "60000");
-        sysfs_write(INTERACTIVE_PATH "sampling_down_factor", "100000");
-        sysfs_write(INTERACTIVE_PATH "target_loads", TARGET_LOADS);
-        sysfs_write(CPUFREQ_PATH "scaling_max_freq", SCALING_MAX_FREQ);
-        ALOGD("%s: set balanced mode", __func__);
-        break;
-    case PROFILE_HIGH_PERFORMANCE:
-        sysfs_write(INTERACTIVE_PATH "boost", "1");
-        sysfs_write(INTERACTIVE_PATH "boostpulse_duration", "60000");
-        sysfs_write(INTERACTIVE_PATH "go_hispeed_load", GO_HISPEED_LOAD);
-        sysfs_write(INTERACTIVE_PATH "hispeed_freq", HISPEED_FREQ);
-        sysfs_write(INTERACTIVE_PATH "io_is_busy", "1");
-        sysfs_write(INTERACTIVE_PATH "min_sample_time", "60000");
-        sysfs_write(INTERACTIVE_PATH "sampling_down_factor", "100000");
-        sysfs_write(INTERACTIVE_PATH "target_loads", "80");
-        sysfs_write(CPUFREQ_PATH "scaling_max_freq", SCALING_MAX_FREQ);
-        ALOGD("%s: set performance mode", __func__);
-        break;
-    case PROFILE_POWER_SAVE:
-        sysfs_write(INTERACTIVE_PATH "boost", "0");
-        sysfs_write(INTERACTIVE_PATH "boostpulse_duration", "0");
-        sysfs_write(INTERACTIVE_PATH "go_hispeed_load", GO_HISPEED_LOAD_LPM);
-        sysfs_write(INTERACTIVE_PATH "hispeed_freq", HISPEED_FREQ_LPM);
-        sysfs_write(INTERACTIVE_PATH "io_is_busy", "0");
-        sysfs_write(INTERACTIVE_PATH "min_sample_time", "60000");
-        sysfs_write(INTERACTIVE_PATH "sampling_down_factor", "100000");
-        sysfs_write(INTERACTIVE_PATH "target_loads", TARGET_LOADS_LPM);
-        sysfs_write(CPUFREQ_PATH "scaling_max_freq", SCALING_MAX_FREQ_LPM);
-        ALOGD("%s: set powersave", __func__);
-        break;
-    default:
-        ALOGE("%s: unknown profile: %d", __func__, profile);
-        return;
-    }
-
-    current_power_profile = profile;
-}
-
-static void set_low_power_mode(int on)
-{
-    if (on == is_low_power_mode)
-        return;
-
-    ALOGD("%s: state=%d", __func__, on);
-
-    if (on) {
-        requested_power_profile = current_power_profile;
-        set_power_profile(PROFILE_POWER_SAVE);
-        is_low_power_mode = 1;
-    } else {
-        is_low_power_mode = 0;
-        set_power_profile(requested_power_profile);
     }
 }
 
@@ -192,7 +106,6 @@ static void power_hint( __attribute__((unused)) struct power_module *module,
 
     switch (hint) {
     case POWER_HINT_INTERACTION:
-        if (current_power_profile != PROFILE_BALANCED)
             return;
 
         if (boostpulse_open() >= 0) {
@@ -208,17 +121,6 @@ static void power_hint( __attribute__((unused)) struct power_module *module,
                 pthread_mutex_unlock(&lock);
             }
         }
-        break;
-    case POWER_HINT_SET_PROFILE:
-        pthread_mutex_lock(&lock);
-        set_power_profile(*(int32_t *)data);
-        pthread_mutex_unlock(&lock);
-        break;
-    case POWER_HINT_LOW_POWER:
-        pthread_mutex_lock(&lock);
-        set_low_power_mode(*(int32_t *)data ? 1 : 0);
-        pthread_mutex_unlock(&lock);
-        break;
     default:
         break;
     }
@@ -228,15 +130,6 @@ static struct hw_module_methods_t power_module_methods = {
     .open = NULL,
 };
 
-static int get_feature(__attribute__((unused)) struct power_module *module,
-                       feature_t feature)
-{
-    if (feature == POWER_FEATURE_SUPPORTED_PROFILES) {
-        return PROFILE_MAX;
-    }
-    return -1;
-}
-
 struct power_module HAL_MODULE_INFO_SYM = {
     .common = {
         .tag = HARDWARE_MODULE_TAG,
@@ -244,12 +137,12 @@ struct power_module HAL_MODULE_INFO_SYM = {
         .hal_api_version = HARDWARE_HAL_API_VERSION,
         .id = POWER_HARDWARE_MODULE_ID,
         .name = "msm8226 Power HAL",
-        .author = "The CyanogenMod Project",
+        .author = "The CyanogenMod Project & The OmniRom Project",
         .methods = &power_module_methods,
     },
 
     .init = power_init,
     .setInteractive = power_set_interactive,
     .powerHint = power_hint,
-    .getFeature = get_feature
 };
+
