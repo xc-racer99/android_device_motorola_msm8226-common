@@ -106,6 +106,8 @@ TARGET_QCOM_MEDIA_VARIANT := caf-msm8974
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072
 
+# Power
+TARGET_POWERHAL_VARIANT := moto
 # Properties
 TARGET_SYSTEM_PROP += $(VENDOR_PATH)/system.prop
 
