@@ -26,8 +26,6 @@ TARGET_SPECIFIC_HEADER_PATH := $(VENDOR_PATH)/include
 TARGET_BOARD_PLATFORM := msm8226
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno305
 
-USE_CLANG_PLATFORM_BUILD := true
-
 # Architecture
 TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
@@ -41,7 +39,7 @@ TARGET_BOOTLOADER_BOARD_NAME := MSM8226
 TARGET_NO_BOOTLOADER := true
 
 # Kernel
-BOARD_KERNEL_CMDLINE := androidboot.bootdevice=msm_sdcc.1 androidboot.hardware=qcom vmalloc=400M utags.blkdev=/dev/block/platform/msm_sdcc.1/by-name/utags
+BOARD_KERNEL_CMDLINE := androidboot.bootdevice=msm_sdcc.1 androidboot.hardware=qcom vmalloc=400M utags.blkdev=/dev/block/platform/msm_sdcc.1/by-name/utags androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
@@ -50,13 +48,13 @@ BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 TARGET_KERNEL_SOURCE := kernel/motorola/msm8226
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := arm-linux-androideabi-
 
-# ANT+
-BOARD_ANT_WIRELESS_DEVICE := "qualcomm-smd"
-
 # Audio
+TARGET_QCOM_AUDIO_VARIANT := caf-msm8974
+TARGET_QCOM_MEDIA_VARIANT := caf-msm8974
 AUDIO_FEATURE_ENABLED_MULTI_VOICE_SESSIONS := true
 AUDIO_FEATURE_ENABLED_NEW_SAMPLE_RATE := true
 BOARD_USES_ALSA_AUDIO := true
+AUDIO_FEATURE_DISABLED_HWDEP_CAL := true
 
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(VENDOR_PATH)/bluetooth
@@ -75,6 +73,7 @@ BOARD_CHARGING_MODE_BOOTING_LPM := /sys/mmi_lpm/lpm_mode
 BOARD_HARDWARE_CLASS := $(VENDOR_PATH)/cmhw/
 
 # Display
+TARGET_QCOM_DISPLAY_VARIANT := caf-msm8974
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true
@@ -82,9 +81,6 @@ USE_OPENGL_RENDERER := true
 
 # FM Radio
 TARGET_QCOM_NO_FM_FIRMWARE := true
-
-# Fonts
-EXTENDED_FONT_FOOTPRINT := true
 
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
@@ -100,6 +96,7 @@ TARGET_SYSTEM_PROP += $(VENDOR_PATH)/system.prop
 
 # Qualcomm support
 BOARD_USES_QCOM_HARDWARE := true
+TARGET_USES_QCOM_BSP := true
 
 # Radio
 TARGET_RIL_VARIANT := caf
@@ -130,3 +127,13 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_qcwcn
 WIFI_DRIVER_FW_PATH_AP := "ap"
 WIFI_DRIVER_FW_PATH_STA := "sta"
 WPA_SUPPLICANT_VERSION := VER_0_8_X
+
+# TWRP
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
+RECOVERY_SDCARD_ON_DATA := true
+TW_INCLUDE_CRYPTO := true
+TW_EXCLUDE_SUPERSU := true
+TW_NO_USB_STORAGE := true
+TW_SCREEN_BLANK_ON_BOOT := true
+TW_TARGET_USES_QCOM_BSP := true
+TW_THEME := portrait_hdpi

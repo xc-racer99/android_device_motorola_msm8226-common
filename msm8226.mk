@@ -23,7 +23,6 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
 # Permissions
 PRODUCT_COPY_FILES += \
-    external/ant-wireless/antradio-library/com.dsi.ant.antradio_library.xml:system/etc/permissions/com.dsi.ant.antradio_library.xml \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:system/etc/permissions/android.hardware.audio.low_latency.xml \
     frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
@@ -49,17 +48,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
-# Boot animation
-TARGET_SCREEN_HEIGHT := 1280
-TARGET_SCREEN_WIDTH := 720
-
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
-
-# ANT+
-PRODUCT_PACKAGES += \
-    AntHalService \
-    com.dsi.ant.antradio_library \
-    libantradio
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -85,8 +74,7 @@ PRODUCT_COPY_FILES += \
 # Camera
 PRODUCT_PACKAGES += \
     libxml2 \
-    camera.msm8226 \
-    Snap
+    camera.msm8226
 
 # Display
 PRODUCT_PACKAGES += \
@@ -171,6 +159,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/thermal/thermal-engine-8226.conf:system/etc/thermal-engine-8226.conf \
     $(LOCAL_PATH)/thermal/thermal-engine-thea.conf:system/etc/thermal-engine-thea.conf \
     $(LOCAL_PATH)/thermal/thermal-engine-titan.conf:system/etc/thermal-engine-titan.conf
+
+# TWRP
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/etc/twrp.fstab:recovery/root/etc/twrp.fstab
 
 # USB
 PRODUCT_PACKAGES += \
