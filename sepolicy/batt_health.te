@@ -16,3 +16,5 @@ allow batt_health sysfs_battery_supply:dir { search read };
 allow batt_health sysfs_battery_supply:file { open read };
 allow batt_health sysfs_usb_supply:dir { search read };
 allow batt_health sysfs_usb_supply:file { open read };
+allow batt_health unlabeled:dir search;
+allow batt_health unlabeled:file { read open };
