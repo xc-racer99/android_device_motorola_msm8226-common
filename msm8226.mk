@@ -82,10 +82,6 @@ PRODUCT_PACKAGES += \
     libxml2 \
     camera.msm8226
 
-# Charge-Only Mode
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilts/bin/moto_com.sh:system/bin/moto_com.sh
-
 # Display
 PRODUCT_PACKAGES += \
     copybit.msm8226 \
