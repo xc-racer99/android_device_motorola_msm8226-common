@@ -377,6 +377,9 @@ on boot
     chown system system /sys/devices/virtual/graphics/fb0/hbm
     chmod 0660 /sys/devices/virtual/graphics/fb0/hbm
 
+    # FM Radio
+    chmod 0644 /dev/radio0
+
     # setup trace dir
     mkdir /cache/trace 0777 root shell
     chown root shell /cache/trace
