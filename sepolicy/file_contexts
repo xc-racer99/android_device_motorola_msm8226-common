@@ -26,18 +26,17 @@
 /dev/socket/mpdecision                                      u:object_r:mpctl_socket:s0
 
 # Partitions
-/dev/block/mmcblk0p15                                       u:object_r:utags_block_device:s0
-/dev/block/mmcblk0p19                                       u:object_r:hob_block_device:s0
-/dev/block/mmcblk0p20                                       u:object_r:hob_block_device:s0
-/dev/block/mmcblk0p25                                       u:object_r:cid_block_device:s0
-/dev/block/mmcblk0p26                                       u:object_r:pds_block_device:s0
-/dev/block/mmcblk0p28                                       u:object_r:clogo_block_device:s0
-/dev/block/mmcblk0p31                                       u:object_r:boot_block_device:s0
-/dev/block/mmcblk0p32                                       u:object_r:recovery_block_device:s0
-/dev/block/mmcblk0p33                                       u:object_r:cache_block_device:s0
-/dev/block/mmcblk0p36                                       u:object_r:userdata_block_device:s0
-/dev/block/mmcblk0p8                                        u:object_r:utags_block_device:s0
-/dev/block/mmcblk0p9                                        u:object_r:logs_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/boot                u:object_r:boot_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/cache               u:object_r:cache_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/cid                 u:object_r:cid_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/clogo               u:object_r:clogo_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/dhob                u:object_r:hob_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/hob                 u:object_r:hob_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/logs                u:object_r:logs_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/pds                 u:object_r:pds_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/recovery            u:object_r:recovery_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/utags               u:object_r:utags_block_device:s0
+/dev/block/platform/msm_sdcc\.1/by-name/utagsBackup         u:object_r:utags_block_device:s0
 
 # PDS
 /pds(/.*)?                                                  u:object_r:pds_file:s0
