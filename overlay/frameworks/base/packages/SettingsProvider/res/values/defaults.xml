@@ -24,4 +24,8 @@
     <!-- Default screen brightness, from 0 to 255. 94 is 37%. -->
     <integer name="def_screen_brightness">94</integer>
 
+    <!-- Comma-separated list of bluetooth, wifi, and cell. -->
+    <string name="def_airplane_mode_radios" translatable="false">cell,bluetooth,wifi,nfc,wimax,ant</string>
+    <string name="airplane_mode_toggleable_radios" translatable="false">bluetooth,wifi,nfc,ant</string>
+
 </resources>
